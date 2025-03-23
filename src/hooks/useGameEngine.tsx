@@ -42,8 +42,12 @@ const getRandomInt = (max: number) => {
   return Math.floor(Math.random() * max);
 };
 export const Time = [15, 15, 15, 60, 15, 15, 15, -1];
-const GameEngineContext = React.createContext<{ players: PlayerState[] }>({
+const GameEngineContext = React.createContext<{
+  players: PlayerState[];
+  phase: string;
+}>({
   players: [],
+  phase: "start",
 });
 
 export const NB_MISSIONS = 5;
@@ -58,7 +62,11 @@ export const GameEngineProvider = ({
   const [phase, setPhase] = useMultiplayerState("phase", "question");
   const [playerTurn, setPlayerTurn] = useMultiplayerState("playerTurn", 0);
   const [playerStart, setPlayerStart] = useMultiplayerState("playerStart", 0);
-
+  const [bustedPlayer, setBustedPlayer] = useMultiplayerState(
+    "bustedPlayer",
+    -1
+  );
+  const [soldPlayer, setSoldPlayer] = useMultiplayerState("soldPlayer", -1);
   const players = usePlayersList(true);
 
   players.sort((a, b) => a.id.localeCompare(b.id)); // we sort players by id to have a consistent order through all clients
@@ -74,8 +82,11 @@ export const GameEngineProvider = ({
   const startGame = () => {
     if (isHost()) {
       console.log("Start game");
+      setBustedPlayer(-1, true);
       distributeRoles();
-      setPhase("question");
+      resetPoints();
+      resetBusted();
+      resetSold();
     }
   };
 
@@ -89,8 +100,24 @@ export const GameEngineProvider = ({
 
     players.forEach((pl) => {
       const randomInt = getRandomInt(shuffledArray.length - 1);
-      pl.setState("role", shuffledArray[randomInt]);
+      pl.setState("role", shuffledArray[randomInt], true);
       shuffledArray.splice(randomInt, 1);
+    });
+  };
+
+  const resetPoints = () => {
+    players.forEach((pl) => {
+      pl.setState("points", 0, true);
+    });
+  };
+  const resetBusted = () => {
+    players.forEach((pl) => {
+      pl.setState("busted", false, true);
+    });
+  };
+  const resetSold = () => {
+    players.forEach((pl) => {
+      pl.setState("sold", false, true);
     });
   };
 
@@ -123,6 +150,34 @@ export const GameEngineProvider = ({
   useEffect(() => {
     startGame();
   }, []);
+
+  useEffect(() => {
+    if (bustedPlayer === -1 || !isHost()) return;
+    const bustedPl = players[bustedPlayer];
+    const copPlayer = players.find((pl) => pl.getState("role") === ROLES.COP);
+    const role = bustedPl.getState("role");
+    const copPoints = copPlayer?.getState("points");
+
+    if (role === ROLES.CANDYMAN) {
+      copPlayer?.setState("points", copPoints + 2, true);
+      bustedPl.setState("busted", true, false);
+      setPhase("busted", true);
+    } else {
+      bustedPl.setState("busted", true, false);
+      copPlayer?.setState("points", copPoints - 1, true);
+    }
+    setBustedPlayer(-1, true);
+  }, [bustedPlayer]);
+
+  useEffect(() => {
+    if (soldPlayer === -1 || !isHost()) return;
+
+    const player = players[soldPlayer];
+    const playerPoints = player.getState("points");
+    player.setState("points", playerPoints + 1, true);
+    player.setState("sold", true, true);
+    setSoldPlayer(-1, true);
+  }, [soldPlayer]);
   const setNextPlayerTurn = () => {
     const newPlayerTurn = (getState("playerTurn") + 1) % players.length;
     setPlayerTurn(newPlayerTurn, true);

@@ -1,11 +1,12 @@
 import { Player } from "components/molecules/player-card";
-import { useGameEngine } from "hooks/useGameEngine";
-import { myPlayer } from "playroomkit";
+import { ROLES, useGameEngine } from "hooks/useGameEngine";
+import { isHost, myPlayer } from "playroomkit";
 
 function App() {
   const me = myPlayer();
-  const { players } = useGameEngine();
+  const { players, phase } = useGameEngine();
   const myIndex = players.findIndex((pl) => pl.id === me.id);
+  const myRole = me.getState("role");
   return (
     <main className="relative max-w-screen-sm mx-auto max-h-screen h-full">
       <header className="pt-16">
@@ -25,8 +26,11 @@ function App() {
           )}
         </div>
       </section>
-      <footer className="fixed bottom-10 right-0 left-0 self-center flex justify-center">
-        <button className="btn btn-primary">I am sold</button>
+      <footer className="fixed bottom-10 right-0 left-0 self-center flex justify-center gap-1">
+        {isHost() && phase === "busted" && (
+          <button className="btn btn-primary">Shuffle roles</button>
+        )}
+        {isHost() && <button className="btn btn-secondary">Restart</button>}
       </footer>
     </main>
   );
