@@ -1869,6 +1869,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"candyman@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "candyman@workspace:."
+  dependencies:
+    "@commitlint/cli": "npm:19.5.0"
+    "@eslint/js": "npm:9.13.0"
+    "@heroicons/react": "npm:2.1.5"
+    "@tailwindcss/forms": "npm:0.5.9"
+    "@types/react": "npm:18.3.12"
+    "@types/react-dom": "npm:18.3.1"
+    "@vitejs/plugin-react": "npm:4.3.3"
+    autoprefixer: "npm:10.4.20"
+    daisyui: "npm:^5.0.9"
+    eslint: "npm:9.13.0"
+    eslint-plugin-react-hooks: "npm:5.0.0"
+    eslint-plugin-react-refresh: "npm:0.4.14"
+    lint-staged: "npm:15.2.10"
+    postcss: "npm:8.4.47"
+    prettier: "npm:3.3.3"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
+    tailwindcss: "npm:3.4.14"
+    typescript: "npm:5.6.3"
+    typescript-eslint: "npm:8.10.0"
+    vite: "npm:5.4.10"
+    vite-preset-react: "npm:2.3.0"
+  languageName: unknown
+  linkType: soft
+
 "caniuse-lite@npm:^1.0.30001400":
   version: 1.0.30001444
   resolution: "caniuse-lite@npm:1.0.30001444"
@@ -2128,6 +2157,13 @@ __metadata:
   version: 3.1.1
   resolution: "csstype@npm:3.1.1"
   checksum: 10c0/7c8b8c5923049d84132581c13bae6e1faf999746fe3998ba5f3819a8e1cdc7512ace87b7d0a4a69f0f4b8ba11daf835d4f1390af23e09fc4f0baad52c084753a
+  languageName: node
+  linkType: hard
+
+"daisyui@npm:^5.0.9":
+  version: 5.0.9
+  resolution: "daisyui@npm:5.0.9"
+  checksum: 10c0/769c1de22c22368babff11a8711d37d5fc7519ac628f3fa2ed6416fe4be815b904f5bd011b371ddfb3187a7a169699277b21d8f6a0c7608ca66a1dc4161e58af
   languageName: node
   linkType: hard
 
@@ -4833,34 +4869,6 @@ __metadata:
   checksum: 10c0/41a5bdd214df2f6c3ecf8622745e4a366c4adced864bc3c833739791aeeeb1838119af7daed4ba36428114b5c67dcda034a79c882e97e43c03e66a4dd7389942
   languageName: node
   linkType: hard
-
-"vital@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "vital@workspace:."
-  dependencies:
-    "@commitlint/cli": "npm:19.5.0"
-    "@eslint/js": "npm:9.13.0"
-    "@heroicons/react": "npm:2.1.5"
-    "@tailwindcss/forms": "npm:0.5.9"
-    "@types/react": "npm:18.3.12"
-    "@types/react-dom": "npm:18.3.1"
-    "@vitejs/plugin-react": "npm:4.3.3"
-    autoprefixer: "npm:10.4.20"
-    eslint: "npm:9.13.0"
-    eslint-plugin-react-hooks: "npm:5.0.0"
-    eslint-plugin-react-refresh: "npm:0.4.14"
-    lint-staged: "npm:15.2.10"
-    postcss: "npm:8.4.47"
-    prettier: "npm:3.3.3"
-    react: "npm:18.3.1"
-    react-dom: "npm:18.3.1"
-    tailwindcss: "npm:3.4.14"
-    typescript: "npm:5.6.3"
-    typescript-eslint: "npm:8.10.0"
-    vite: "npm:5.4.10"
-    vite-preset-react: "npm:2.3.0"
-  languageName: unknown
-  linkType: soft
 
 "vite-preset-react@npm:2.3.0":
   version: 2.3.0
