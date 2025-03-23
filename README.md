@@ -34,35 +34,6 @@ Mocking up web app with <b>Vital</b><sup><em>(speed)</em></sup><br>
 - [TypeScript](https://www.typescriptlang.org/)
 - [Netlify](https://www.netlify.com/) - zero-config deployment
 
-## Try it now!
-
-### GitHub Template
-
-[Create a repo from this template on GitHub](https://github.com/jvidalv/vital/generate).
-
-### Clone to local
-
-If you prefer to do it manually with the cleaner git history
-
-```bash
-npx degit jvidalv/vital my-vital-app
-cd my-vital-app
-yarn # If you don't have yarn installed, run: npm install -g yarn
-```
-
-## Checklist
-
-When you use this template, try follow the checklist to update your info properly
-
-- [ ] Rename `name` and `author` fields in `package.json`
-- [ ] Change the author name in `LICENSE`
-- [ ] Change the title in `index.html`
-- [ ] Change the favicon in `public`
-- [ ] Modify the manifest in `public`
-- [ ] Clean up the README's
-
-And, enjoy :)
-
 ## Usage
 
 ### Development
