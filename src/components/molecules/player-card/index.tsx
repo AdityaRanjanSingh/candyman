@@ -1,9 +1,9 @@
-import { ROLES, useGameEngine } from "hooks/useGameEngine";
+import { PHASES, ROLES, useGameEngine } from "hooks/useGameEngine";
 import { isHost, myPlayer, setState } from "playroomkit";
 import { useEffect, useState } from "react";
 
 export const Player = ({ index }: { index: number }) => {
-  const { players } = useGameEngine();
+  const { players, phase } = useGameEngine();
   const me = myPlayer();
   const myIndex = players.findIndex((pl) => pl.id === me.id);
   const player = players[index];
@@ -13,17 +13,21 @@ export const Player = ({ index }: { index: number }) => {
 
   const points = player.getState("points");
   const sold = player.getState("sold");
-  const busted = player.getState("busted");
+  const exposed = player.getState("exposed");
 
   useEffect(() => {
-    if (sold || busted) setReveal(true);
-  }, [sold, busted]);
+    if (sold || exposed || phase === PHASES.EXPOSED) {
+      setReveal(true);
+    } else {
+      setReveal(false);
+    }
+  }, [sold, exposed, phase]);
   const onSold = () => {
     setState("soldPlayer", index, true);
   };
 
-  const onBust = () => {
-    setState("bustedPlayer", index, true);
+  const onExpose = () => {
+    setState("exposedPlayer", index, true);
   };
   return (
     <div className="shadow-sm p-2 flex items-center flex-col gap-1 rounded-2xl">
@@ -39,9 +43,9 @@ export const Player = ({ index }: { index: number }) => {
             </div>
           </div>
         </div>
-        <div className="swap-on flex flex-col justify-center items-center">
-          <h1 className="badge badge-info badge-sm">
-            {sold ? "Sold" : busted ? "Bursted" : ""}
+        <div className="swap-on flex flex-col justify-center items-center gap-1">
+          <h1 className="badge badge-neutral badge-sm">
+            {sold ? "Sold" : exposed ? "Exposed" : "Exposed"}
           </h1>
           <h1 className="badge badge-info badge-sm">
             {player.getState("role")}
@@ -52,7 +56,7 @@ export const Player = ({ index }: { index: number }) => {
       <h1 className="text-center text-l font-bold">
         {player.getProfile().name}
       </h1>
-      {/* {busted && (
+      {/* {exposed && (
         <h1 className="badge badge-info badge-sm">{player.getState("role")}</h1>
       )} */}
       {isHost() && (
@@ -68,11 +72,17 @@ export const Player = ({ index }: { index: number }) => {
           Sold
         </button>
       )}
-      {!isCurrentPlayer && me.getState("role") === ROLES.COP && !busted && (
-        <button className="btn btn-primary btn-xs btn-wide" onClick={onBust}>
-          Bust
-        </button>
-      )}
+      {!isCurrentPlayer &&
+        me.getState("role") === ROLES.COP &&
+        !exposed &&
+        !sold && (
+          <button
+            className="btn btn-primary btn-xs btn-wide"
+            onClick={onExpose}
+          >
+            Expose
+          </button>
+        )}
     </div>
   );
 };
