@@ -41,6 +41,7 @@
   "dependencies": {
     "@heroicons/react": "2.1.5",
     "@tailwindcss/vite": "^4.0.15",
+    "playroomkit": "^0.0.87",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "theme-change": "^2.5.0"
