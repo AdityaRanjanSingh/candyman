@@ -1,6 +1,12 @@
-import { PlayerState } from "playroomkit";
+import { useGameEngine } from "hooks/useGameEngine";
+import { myPlayer } from "playroomkit";
 
-export const Player = ({ player }: { player: PlayerState }) => {
+export const Player = ({ index }: { index: number }) => {
+  const { players } = useGameEngine();
+  const me = myPlayer();
+  const myIndex = players.findIndex((pl) => pl.id === me.id);
+  const player = players[index];
+  const isCurrentPlayer = myIndex === index;
   return (
     <div className="bg-base-100 shadow-sm p-2 flex items-center flex-col">
       <div className="avatar">
@@ -11,7 +17,9 @@ export const Player = ({ player }: { player: PlayerState }) => {
       <h1 className="text-center text-l mt-1 font-bold">
         {player.getProfile().name}
       </h1>
-      <p className="text-base-content text-sm">You are a buyer</p>
+      {isCurrentPlayer && (
+        <p className="text-base-content text-sm">You are a buyer</p>
+      )}
     </div>
   );
 };
