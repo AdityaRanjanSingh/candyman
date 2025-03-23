@@ -8,6 +8,11 @@ import {
 } from "playroomkit";
 import React, { useEffect, useRef } from "react";
 
+export const ROLES = {
+  CANDYMAN: "CANDYMAN",
+  BUYER: "BUYER",
+  COP: "COP",
+};
 export const Phases = [
   "ready",
   "role-description",
@@ -33,7 +38,9 @@ export const Phases = [
 
 export const INTRODUCTION_TIME = 5;
 export const DISCUSSION_TIME = 15;
-
+const getRandomInt = (max: number) => {
+  return Math.floor(Math.random() * max);
+};
 export const Time = [15, 15, 15, 60, 15, 15, 15, -1];
 const GameEngineContext = React.createContext<{ players: PlayerState[] }>({
   players: [],
@@ -67,8 +74,24 @@ export const GameEngineProvider = ({
   const startGame = () => {
     if (isHost()) {
       console.log("Start game");
+      distributeRoles();
       setPhase("question");
     }
+  };
+
+  const distributeRoles = () => {
+    const roles = [
+      ...new Array(1).fill(0).map(() => ROLES.CANDYMAN),
+      ...new Array(1).fill(0).map(() => ROLES.COP),
+      ...new Array(players.length - 2).fill(0).map(() => ROLES.BUYER),
+    ];
+    const shuffledArray = roles.sort(() => 0.5 - Math.random());
+
+    players.forEach((pl) => {
+      const randomInt = getRandomInt(shuffledArray.length - 1);
+      pl.setState("role", shuffledArray[randomInt]);
+      shuffledArray.splice(randomInt, 1);
+    });
   };
 
   const phaseEnd = () => {

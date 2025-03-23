@@ -18,7 +18,12 @@ export const Player = ({ index }: { index: number }) => {
         {player.getProfile().name}
       </h1>
       {isCurrentPlayer && (
-        <p className="text-base-content text-sm">You are a buyer</p>
+        <>
+          {/* <p className="text-base-content text-md capitalize">{player.getState("role")}</p> */}
+          {/* <p className="text-base-content text-sm">
+            Lookout for a signal from candyman
+          </p> */}
+        </>
       )}
     </div>
   );

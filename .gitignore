@@ -4,3 +4,4 @@ dist
 .eslintcache
 
 .yarn
+.env.local

@@ -7,12 +7,13 @@ import { GameEngineProvider } from "./hooks/useGameEngine";
 import { Leva } from "leva";
 
 const container = document.getElementById("root")!;
+const DEBUG = import.meta.env.VITE_DEBUG;
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 insertCoin().then(() => {
   root.render(
     <React.StrictMode>
       <GameEngineProvider>
-        <Leva hidden={!isHost()}></Leva>
+        <Leva hidden={DEBUG && !isHost()}></Leva>
         <App />
       </GameEngineProvider>
     </React.StrictMode>
