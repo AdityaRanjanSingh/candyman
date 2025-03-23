@@ -1,5 +1,5 @@
 import { useGameEngine } from "hooks/useGameEngine";
-import { myPlayer } from "playroomkit";
+import { isHost, myPlayer } from "playroomkit";
 
 export const Player = ({ index }: { index: number }) => {
   const { players } = useGameEngine();
@@ -17,6 +17,14 @@ export const Player = ({ index }: { index: number }) => {
       <h1 className="text-center text-l mt-1 font-bold">
         {player.getProfile().name}
       </h1>
+      {isHost() && (
+        <button
+          className="btn btn-error btn-xs btn-wide"
+          onClick={() => player.kick()}
+        >
+          Remove
+        </button>
+      )}
       {isCurrentPlayer && (
         <>
           {/* <p className="text-base-content text-md capitalize">{player.getState("role")}</p> */}
