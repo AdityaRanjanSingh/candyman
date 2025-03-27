@@ -9,7 +9,7 @@ import { Leva } from "leva";
 const container = document.getElementById("root")!;
 const DEBUG = import.meta.env.VITE_DEBUG;
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
-insertCoin().then(() => {
+insertCoin({ reconnectGracePeriod: 600 }).then(() => {
   root.render(
     <React.StrictMode>
       <GameEngineProvider>

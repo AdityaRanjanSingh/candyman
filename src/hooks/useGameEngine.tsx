@@ -1,10 +1,12 @@
 import {
+  getState,
   isHost,
   PlayerState,
+  setState,
   useMultiplayerState,
   usePlayersList,
 } from "playroomkit";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 
 export const ROLES = {
   CANDYMAN: "CANDYMAN",
@@ -106,13 +108,20 @@ export const GameEngineProvider = ({
   };
 
   useEffect(() => {
+    if (!isHost()) return;
     startGame();
   }, []);
 
-  const incrementPoints = (index: number, decrement: boolean = false) => {
+  const incrementPoints = (
+    index: number,
+    decrement: boolean = false,
+    points: number = 1
+  ) => {
     const player = players[index];
     const existingPoints = player.getState("points");
-    const newPoints = decrement ? existingPoints - 1 : existingPoints + 1;
+    const newPoints = decrement
+      ? existingPoints - points
+      : existingPoints + points;
     player.setState("points", newPoints, true);
 
     if (newPoints < highestPoints) return;
@@ -125,9 +134,10 @@ export const GameEngineProvider = ({
     }
   };
 
-  useEffect(() => {
-    if (exposedPlayer === -1 || !isHost()) return;
-    const exposedPl = players[exposedPlayer];
+  const checkExposedPlayer = useCallback(() => {
+    const exP = getState("exposedPlayer");
+    if (exP === -1 || !isHost()) return;
+    const exposedPl = players[exP];
     const copPlayerIndex = players.findIndex(
       (pl) => pl.getState("role") === ROLES.COP
     );
@@ -135,14 +145,17 @@ export const GameEngineProvider = ({
     const role = exposedPl.getState("role");
 
     if (role === ROLES.CANDYMAN) {
-      incrementPoints(copPlayerIndex);
-      incrementPoints(copPlayerIndex);
-      exposedPl.setState("exposed", true, false);
-      setPhase(PHASES.EXPOSED, true);
+      incrementPoints(copPlayerIndex, false, 2);
+      exposedPl.setState("exposed", true);
+      setState("phase", PHASES.EXPOSED, true);
     } else {
-      exposedPl.setState("exposed", true, false);
+      exposedPl.setState("exposed", true);
       incrementPoints(copPlayerIndex, true);
     }
+  }, []);
+  useEffect(() => {
+    console.log({ exposedPlayer });
+    if (exposedPlayer !== -1 || !isHost()) checkExposedPlayer();
     setExposedPlayer(-1, true);
   }, [exposedPlayer]);
 
@@ -167,6 +180,9 @@ export const GameEngineProvider = ({
     if (phase === PHASES.RESTART) {
       startGame();
       setPhase(PHASES.PLAY);
+    }
+    if (phase === PHASES.EXPOSED) {
+      players.forEach((pl) => pl.setState("exposed", true));
     }
   }, [phase]);
 

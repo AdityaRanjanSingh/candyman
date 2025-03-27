@@ -2,7 +2,13 @@ import { PHASES, ROLES, useGameEngine } from "hooks/useGameEngine";
 import { isHost, myPlayer, setState } from "playroomkit";
 import { useEffect, useState } from "react";
 
-export const Player = ({ index }: { index: number }) => {
+export const Player = ({
+  index,
+  className = "",
+}: {
+  index: number;
+  className: string;
+}) => {
   const { players, phase } = useGameEngine();
   const me = myPlayer();
   const myIndex = players.findIndex((pl) => pl.id === me.id);
@@ -30,7 +36,12 @@ export const Player = ({ index }: { index: number }) => {
     setState("exposedPlayer", index, true);
   };
   return (
-    <div className="shadow-sm p-2 flex items-center flex-col gap-1 rounded-2xl">
+    <div
+      className={
+        "shadow-sm p-2 flex items-center flex-col gap-1 rounded-2xl " +
+        className
+      }
+    >
       <div className="badge badge-accent">{points}</div>
       <label className="swap swap-flip">
         {/* this hidden checkbox controls the state */}

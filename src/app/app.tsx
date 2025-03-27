@@ -24,7 +24,7 @@ function App() {
           You are a {me.getState("role")}
         </h1>
         <div className="flex justify-center">
-          <Player index={myIndex} />
+          <Player className="bg-neutral-content" index={myIndex} />
         </div>
       </header>
       <section className="mt-5 flex-1  mb-14">
